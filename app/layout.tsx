@@ -1,3 +1,5 @@
+//root layout for all child routes
+
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -27,6 +29,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        {/* root layout coming from root layout.tsx */}
         {children}
       </body>
     </html>
