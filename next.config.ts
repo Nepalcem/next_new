@@ -4,7 +4,7 @@ const nextConfig: NextConfig = {
   /* config options here */
   //allow images from certain external domain
   images: {
-    domains: ["avatars.githubusercontent.com"],
+    domains: ["avatars.githubusercontent.com", "lh3.googleusercontent.com"],
   },
 };
 

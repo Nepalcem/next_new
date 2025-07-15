@@ -3,6 +3,7 @@ import SignInButton from "./components/signInButton";
 import { auth } from "@/auth";
 import Image from "next/image";
 import SignOutButton from "./components/signOutButton";
+import GoogleSignInButton from "./components/googleSignInButton";
 
 export default async function Home() {
   const session = await auth();
@@ -34,6 +35,7 @@ export default async function Home() {
       <div>
         <p>You are not Signed in</p>
         <SignInButton />
+        <GoogleSignInButton/>
       </div>
     </>
   );
