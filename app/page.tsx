@@ -1,42 +1,57 @@
-"use server";
-import SignInButton from "./components/signInButton";
-import { auth } from "@/auth";
-import Image from "next/image";
-import SignOutButton from "./components/signOutButton";
-import GoogleSignInButton from "./components/googleSignInButton";
+"use client";
 
-export default async function Home() {
-  const session = await auth();
+import { useState } from "react";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
-  if (session?.user) {
-    return (
-      <>
-        <div>
-          <h1>User signed in with name: {session.user.name}</h1>
-          <p>Email: {session.user.email}</p>
-          {session.user.image && (
-            <Image
-              className="rounded-xl"
-              src={session.user.image}
-              width={48}
-              height={48}
-              alt={session.user.name ?? "Avatar"}
-            />
-          )}
-        </div>
-        <SignOutButton/>
-      </>
-    );
-  }
+export default function LoginPage() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const router = useRouter();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const res = await signIn("credentials", {
+      email,
+      password,
+      redirect: false, // keep control in client
+    });
+
+    if (res?.ok) {
+      router.push("/dashboard");
+    } else {
+      setError("Invalid credentials");
+    }
+  };
 
   return (
     <>
-      <h1 className="text-2xl">Home</h1>
-      <div>
-        <p>You are not Signed in</p>
-        <SignInButton />
-        <GoogleSignInButton/>
-      </div>
+      <h1>Home Page</h1>
+      <form onSubmit={handleSubmit}>
+        <h2>Login</h2>
+
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+
+        <button type="submit">Login</button>
+
+        {error && <p style={{ color: "red" }}>{error}</p>}
+      </form>
     </>
   );
 }
