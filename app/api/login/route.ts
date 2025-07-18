@@ -1,6 +1,8 @@
-import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
-import sql from "@/app/lib/db/db";
+import { NextResponse } from "next/server";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
 
 export async function POST(request: Request) {
   try {
@@ -11,14 +13,14 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
-    const users = await sql`SELECT * FROM users WHERE email = ${email}`;
-    if (users.length === 0) {
+    const user = await prisma.user.findUnique({ where: { email } });
+
+    if (!user) {
       return NextResponse.json(
         { message: "Invalid email or password." },
         { status: 401 }
       );
     }
-    const user = users[0];
     const passwordMatch = await bcrypt.compare(password, user.password);
     if (!passwordMatch) {
       return NextResponse.json(
@@ -26,8 +28,7 @@ export async function POST(request: Request) {
         { status: 401 }
       );
     }
-    // TODO: Set session/cookie here using NextAuth or custom logic
-    // For now, just return success
+
     return NextResponse.json({ message: "Login successful." });
   } catch (e) {
     console.error(e);
