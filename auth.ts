@@ -20,19 +20,19 @@ export const authOptions = {
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null;
         const user = await prisma.user.findUnique({
-          where: { email: credentials.email },
+          where: { email: credentials.email as string },
         });
-        if (!user || !user.password) return null;
+        if (!user || !user.password || !user.role) return null; // Ensure role is string
         const isValid = await bcrypt.compare(
           String(credentials.password),
           user.password
         );
         if (!isValid) return null;
         return {
-          id: user.id,
+          id: String(user.id), // Ensure id is string
           name: user.name,
           email: user.email,
-          role: user.role,
+          role: user.role, // Now guaranteed to be string
         };
       },
     }),
