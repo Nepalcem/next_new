@@ -7,7 +7,6 @@ import LoginButton from "../components/navigation/loginButton";
 export default async function RegisterPage() {
   const session = await auth();
 
-  console.log(session);
   if (session) {
     redirect("/");
   }
