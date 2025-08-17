@@ -19,17 +19,18 @@ export default function LoginForm() {
       email,
       password,
     });
-    if (res?.ok) {
+    console.log(res);
+    if (res?.error !== "CredentialsSignin") {
       router.push("/dashboard");
     } else {
-      setMessage(res?.error || "Invalid email or password.");
+      setMessage("Invalid email or password.");
     }
     setLoading(false);
   };
 
   return (
     <form onSubmit={handleSubmit} style={{ maxWidth: 400, margin: "0 auto" }}>
-      <h2>Login</h2>
+      <h2 className="text-2xl font-bold mb-4">Login Page</h2>
       <div style={{ marginBottom: 12 }}>
         <label>Email</label>
         <input
@@ -38,6 +39,7 @@ export default function LoginForm() {
           onChange={(e) => setEmail(e.target.value)}
           required
           style={{ width: "100%", border: "1px solid #ccc" }}
+          autoComplete="true"
         />
       </div>
       <div style={{ marginBottom: 12 }}>
@@ -48,16 +50,17 @@ export default function LoginForm() {
           onChange={(e) => setPassword(e.target.value)}
           required
           style={{ width: "100%", border: "1px solid #ccc" }}
+          autoComplete="true"
         />
       </div>
       <button
         type="submit"
         disabled={loading}
-        style={{ width: "100%", border: "1px solid #ccc" }}
+        className="bg-violet-400 rounded-2xl px-4 py-2 text-white hover:bg-violet-500 transition cursor-pointer"
       >
         {loading ? "Logging in..." : "Login"}
       </button>
-      {message && <p style={{ marginTop: 16 }}>{message}</p>}
+      {message && <p style={{ marginTop: 16, color: "red" }}>{message}</p>}
     </form>
   );
 }

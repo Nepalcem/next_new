@@ -40,7 +40,7 @@ export default async function Navbar() {
           {/* User Info and Sign Out */}
           <div className="flex items-center space-x-4">
             <span className="text-sm text-gray-600">
-              Welcome, {session?.user?.email}
+              Welcome, <span className="font-bold">{session?.user?.email}</span>
             </span>
             <SignOutButton />
           </div>

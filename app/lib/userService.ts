@@ -80,3 +80,37 @@ export async function getUserStats(userId: number) {
     return null;
   }
 }
+
+export async function getUserByEmail(email: string) {
+  try {
+    const user = await prisma.user.findUnique({
+      where: { email },
+      include: {
+        sold_services: true,
+        ctr: true,
+      },
+    });
+    return user;
+  } catch (error) {
+    console.error("Error fetching user by email:", error);
+    return null;
+  }
+}
+export async function updateUserPassword(email: string, password: string) {
+  try {
+    // Dynamically import bcrypt to avoid client-side bundling issues
+    const bcrypt = await import("bcrypt");
+
+    // Hash the password before storing
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const user = await prisma.user.update({
+      where: { email },
+      data: { password: hashedPassword },
+    });
+    return user;
+  } catch (error) {
+    console.error("Error updating user password:", error);
+    return null;
+  }
+}

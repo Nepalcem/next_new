@@ -71,7 +71,7 @@ export default function RegisterForm() {
       <button
         type="submit"
         disabled={loading}
-        style={{ width: "100%", border: "1px solid #ccc" }}
+        className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 disabled:opacity-50 cursor-pointer"
       >
         {loading ? "Registering..." : "Register"}
       </button>
