@@ -16,9 +16,9 @@ datasource db {
 model User {
   id            Int      @id @default(autoincrement())
   email         String   @unique
-  name          String?
-  role          String? @default("user")
-  password      String?
+  name          String
+  role          Role    @default(user)
+  password      String
   image         String?
   emailVerified DateTime?
   sold_services sold_services[]
@@ -83,4 +83,9 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+enum Role {
+  user
+  admin
 }
