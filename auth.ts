@@ -22,7 +22,8 @@ export const authOptions = {
         const user = await prisma.user.findUnique({
           where: { email: credentials.email as string },
         });
-        if (!user || !user.password || !user.role) return null; // Ensure role is string
+        if (!user || !user.role) return null; // Check if user exists and has role
+        if (!user.password) return null; // For credential login, password is required
         const isValid = await bcrypt.compare(
           String(credentials.password),
           user.password

@@ -18,7 +18,7 @@ model User {
   email         String   @unique
   name          String
   role          Role    @default(user)
-  password      String
+  password      String?
   image         String?
   emailVerified DateTime?
   sold_services sold_services[]

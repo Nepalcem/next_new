@@ -19,7 +19,7 @@ export default function LoginForm() {
       email,
       password,
     });
-    console.log(res);
+    // console.log(res);
     if (res?.error !== "CredentialsSignin") {
       router.push("/dashboard");
     } else {
